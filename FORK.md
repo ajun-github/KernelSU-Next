@@ -1,4 +1,4 @@
-# KernelSU-Demo 二改说明
+# AjunSu 二改说明
 
 基于 [KernelSU-Next](https://github.com/KernelSU-Next/KernelSU-Next) 的品牌定制分支。
 
@@ -6,7 +6,7 @@
 
 | 项目 | 位置 | 说明 |
 | --- | --- | --- |
-| 应用名 | `manager/app/src/main/res/values/strings.xml` → `app_name` | `KernelSU-Demo` |
+| 应用名 | `manager/app/src/main/res/values/strings.xml` → `app_name` | `AjunSu` |
 | 包名 | `manager/app/build.gradle.kts` → `namespace`<br>`manager/app/src/main/java/io/github/ajun/ksunext/`<br>`manager/app/src/main/aidl/io/github/ajun/ksunext/`<br>`manager/app/src/main/cpp/jni.cc` | `com.rifsxd.ksunext` → `io.github.ajun.ksunext` |
 | 主色 / 配色 | `ui/theme/Color.kt` | 固定 Material 3 青绿配色（种子色 `#00BFA5`） |
 | 关闭动态取色 | `ui/theme/Theme.kt` | `dynamicColor` 默认 `false` |

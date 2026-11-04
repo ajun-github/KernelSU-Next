@@ -6,7 +6,7 @@ package io.github.ajun.ksunext
  */
 object Branding {
     /** 项目名，仅用于展示（桌面名称在 strings.xml 的 app_name） */
-    const val NAME = "KernelSU-Demo"
+    const val NAME = "AjunSu"
 
     /** 你的仓库地址（About 页、更新检查、问题反馈都用它） */
     const val REPO_URL = "https://github.com/ajun-github/KernelSU-Next"

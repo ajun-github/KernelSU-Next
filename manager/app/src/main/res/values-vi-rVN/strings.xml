@@ -14,7 +14,7 @@
   <string name="home_working">Đang hoạt động</string>
   <string name="home_module_update_count">Cập nhật: %d</string>
   <string name="home_failure">Không hỗ trợ | Chưa được tích hợp</string>
-  <string name="home_failure_tip">Kernel Non-GKI không được hỗ trợ. Hãy tích hợp trình điều khiển cũ KernelSU-Demo vào kernel của bạn!</string>
+  <string name="home_failure_tip">Kernel Non-GKI không được hỗ trợ. Hãy tích hợp trình điều khiển cũ AjunSu vào kernel của bạn!</string>
   <string name="home_kernel">Phiên bản Kernel</string>
   <string name="hook_mode">Chế độ Hook</string>
   <string name="enable">Bật</string>
@@ -235,12 +235,12 @@
   <string name="settings_enable_avc_spoof">Giả mạo AVC</string>
   <string name="settings_enable_avc_spoof_summary">Khắc phục lỗi rò rỉ ngữ cảnh selinux do từ chối avc gây ra trong nhật ký kiểm tra.</string>
   <string name="manage_repositories">Quản lý Kho</string>
-  <string name="app_name">KernelSU-Demo</string>
-  <string name="require_kernel_version">Phiên bản KernelSU-Demo hiện tại %1$d quá thấp để trình quản lý có thể hoạt động bình thường. Vui lòng nâng cấp lên phiên bản %2$d hoặc cao hơn!</string>
-  <string name="profile_umount_modules_summary">Bật tùy chọn này sẽ cho phép KernelSU-Demo khôi phục bất kỳ tệp nào đã được sửa đổi bởi các mô-đun cho ứng dụng này.</string>
-  <string name="settings_uninstall_temporary_message">Tạm thời gỡ cài đặt KernelSU-Demo, khôi phục về trạng thái ban đầu sau lần khởi động lại tiếp theo.</string>
-  <string name="settings_uninstall_permanent_message">Gỡ cài đặt KernelSU-Demo (root và tất cả các mô-đun) hoàn toàn và vĩnh viễn.</string>
-  <string name="settings_restore_stock_image_message">Khôi phục về image gốc (nếu có một bản sao lưu tồn tại), thường được sử dụng trước OTA; nếu bạn cần gỡ hẳn KernelSU-Demo, hãy sử dụng \"Gỡ cài đặt vĩnh viễn\".</string>
+  <string name="app_name">AjunSu</string>
+  <string name="require_kernel_version">Phiên bản AjunSu hiện tại %1$d quá thấp để trình quản lý có thể hoạt động bình thường. Vui lòng nâng cấp lên phiên bản %2$d hoặc cao hơn!</string>
+  <string name="profile_umount_modules_summary">Bật tùy chọn này sẽ cho phép AjunSu khôi phục bất kỳ tệp nào đã được sửa đổi bởi các mô-đun cho ứng dụng này.</string>
+  <string name="settings_uninstall_temporary_message">Tạm thời gỡ cài đặt AjunSu, khôi phục về trạng thái ban đầu sau lần khởi động lại tiếp theo.</string>
+  <string name="settings_uninstall_permanent_message">Gỡ cài đặt AjunSu (root và tất cả các mô-đun) hoàn toàn và vĩnh viễn.</string>
+  <string name="settings_restore_stock_image_message">Khôi phục về image gốc (nếu có một bản sao lưu tồn tại), thường được sử dụng trước OTA; nếu bạn cần gỡ hẳn AjunSu, hãy sử dụng \"Gỡ cài đặt vĩnh viễn\".</string>
   <string name="backup_success">Sao lưu thành công</string>
   <string name="backup_failed">Sao lưu thất bại</string>
   <string name="restore_success">Khôi phục thành công</string>

@@ -125,7 +125,7 @@ jobs:
             keytool -genkeypair -v -keystore key.jks -alias ksudemo \
               -keyalg RSA -keysize 2048 -validity 10000 \
               -storepass "ksudemo123" -keypass "ksudemo123" \
-              -dname "CN=KernelSU-Demo, OU=Dev, O=Demo, L=NA, S=NA, C=CN"
+              -dname "CN=AjunSu, OU=Dev, O=Demo, L=NA, S=NA, C=CN"
             KEYSTORE_PASSWORD="ksudemo123"
             KEY_ALIAS="ksudemo"
             KEY_PASSWORD="ksudemo123"
@@ -144,6 +144,6 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v7
         with:
-          name: KernelSU-Demo-apk
+          name: AjunSu-apk
           path: manager/app/build/outputs/apk/release/*.apk
           retention-days: 30

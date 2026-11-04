@@ -14,7 +14,7 @@
   <string name="home_working">Working</string>
   <string name="home_module_update_count">Updates: %d</string>
   <string name="home_failure">Unsupported | Not integrated</string>
-  <string name="home_failure_tip">Non-GKI kernels are not supported. Integrate KernelSU-Demo legacy driver in your kernel!</string>
+  <string name="home_failure_tip">Non-GKI kernels are not supported. Integrate AjunSu legacy driver in your kernel!</string>
   <string name="home_kernel">Kernel version</string>
   <string name="hook_mode">Hook mode</string>
   <string name="enable">Enable</string>
@@ -235,12 +235,12 @@
   <string name="settings_enable_avc_spoof">AVC spoofing</string>
   <string name="settings_enable_avc_spoof_summary">Fix selinux context leak caused by avc denial in audit log.</string>
   <string name="manage_repositories">Manage Repositories</string>
-  <string name="app_name">KernelSU-Demo</string>
-  <string name="require_kernel_version">The current KernelSU-Demo version %1$d is too low for the manager to work properly. Please upgrade to version %2$d or higher!</string>
-  <string name="profile_umount_modules_summary">Enabling this option will allow KernelSU-Demo to restore any modified files by the modules for this app.</string>
-  <string name="settings_uninstall_temporary_message">Temporarily uninstall KernelSU-Demo, restore to original state after next reboot.</string>
-  <string name="settings_uninstall_permanent_message">Uninstalling KernelSU-Demo (root and all modules) completely and permanently.</string>
-  <string name="settings_restore_stock_image_message">Restore the stock factory image (if a backup exists), usually used before OTA; if you need to uninstall KernelSU-Demo, please use \"Uninstall permanently\".</string>
+  <string name="app_name">AjunSu</string>
+  <string name="require_kernel_version">The current AjunSu version %1$d is too low for the manager to work properly. Please upgrade to version %2$d or higher!</string>
+  <string name="profile_umount_modules_summary">Enabling this option will allow AjunSu to restore any modified files by the modules for this app.</string>
+  <string name="settings_uninstall_temporary_message">Temporarily uninstall AjunSu, restore to original state after next reboot.</string>
+  <string name="settings_uninstall_permanent_message">Uninstalling AjunSu (root and all modules) completely and permanently.</string>
+  <string name="settings_restore_stock_image_message">Restore the stock factory image (if a backup exists), usually used before OTA; if you need to uninstall AjunSu, please use \"Uninstall permanently\".</string>
   <string name="backup_success">Backup completed successfully</string>
   <string name="backup_failed">Backup failed</string>
   <string name="restore_success">Restore completed successfully</string>
@@ -288,7 +288,7 @@
   <string name="sulog_entry_description_ioctl_grant_root">Granted root access via KernelSU ioctl</string>
   <string name="sulog_entry_title_daemon_restarted">Daemon restarted</string>
   <string name="sulog_entry_title_dropped_events">Dropped events</string>
-  <string name="require_manager_version">The current KernelSU-Demo manager version %1$d is too low for KernelSU-Demo to work properly. Please upgrade manager to version %2$d or higher!</string>
+  <string name="require_manager_version">The current AjunSu manager version %1$d is too low for AjunSu to work properly. Please upgrade manager to version %2$d or higher!</string>
   <string name="profile_flags">Flags</string>
   <string name="profile_flags_desc_no_new_privs">Prevent further privilege escalation via KernelSU from within the context of this root profile.</string>
   <string name="settings_sulog">SU Log</string>
