@@ -28,6 +28,13 @@
 
 GitHub Actions → **Build APK** → Run workflow（或直接 push 到 `dev` / `main` / `fork/brand`）。
 
+push 到 `dev` 时会自动：
+1. 编 ksud（arm64-v8a / x86_64）+ manager APK
+2. 用固定的 `v1.0.0` 标签把 APK 发布到 Releases（每次删掉旧 APK 资产再上传，属于滚动更新）
+
+上游的 `Release` 工作流（tag push 触发、会编全套 LKM 矩阵）已改为仅手动触发；
+`Build Manager CI` 的 push 触发也已关闭，避免重复构建。
+
 首次使用建议配置签名 Secrets，保证后续版本可以覆盖安装：
 
 | Secret | 内容 |
