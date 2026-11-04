@@ -131,15 +131,26 @@ jobs:
             KEY_PASSWORD="ksudemo123"
           fi
           {
-            echo "KEYSTORE_PASSWORD='$KEYSTORE_PASSWORD'"
-            echo "KEY_ALIAS='$KEY_ALIAS'"
-            echo "KEY_PASSWORD='$KEY_PASSWORD'"
-            echo "KEYSTORE_FILE='key.jks'"
+            echo "KEYSTORE_PASSWORD=$KEYSTORE_PASSWORD"
+            echo "KEY_ALIAS=$KEY_ALIAS"
+            echo "KEY_PASSWORD=$KEY_PASSWORD"
+            echo "KEYSTORE_FILE=key.jks"
           } >> gradle.properties
 
       - name: Build with Gradle
         working-directory: ./manager
-        run: ./gradlew clean assembleRelease
+        run: |
+          set -o pipefail
+          ./gradlew clean assembleRelease | tee gradle-build.log
+
+      - name: Verify signing
+        working-directory: ./manager
+        run: |
+          if grep -q "Apksign fallbacks" gradle-build.log; then
+            echo "::error::签名失败：回退到了 debug 签名，请检查 KEYSTORE_* Secrets 与 gradle.properties"
+            exit 1
+          fi
+          echo "签名配置已生效"
 
       - name: Upload APK
         uses: actions/upload-artifact@v7
