@@ -158,3 +158,38 @@ jobs:
           name: AjunSu-apk
           path: manager/app/build/outputs/apk/release/*.apk
           retention-days: 30
+
+  publish:
+    name: Publish release
+    needs: build-apk
+    if: github.ref == 'refs/heads/dev'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download APK
+        uses: actions/download-artifact@v7
+        with:
+          name: AjunSu-apk
+          path: apk
+
+      - name: Publish to Releases
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          APK=$(find apk -name '*.apk' | head -n1)
+          echo "APK: $APK"
+          TAG=v1.0.0
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            # 移除旧的 apk 资产，避免累积
+            for name in $(gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json assets \
+                --jq '.assets[] | select(.name | endswith(".apk")) | .name'); do
+              gh release delete-asset "$TAG" "$name" --repo "$GITHUB_REPOSITORY" --yes
+            done
+            gh release upload "$TAG" "$APK" --repo "$GITHUB_REPOSITORY"
+          else
+            gh release create "$TAG" "$APK" --repo "$GITHUB_REPOSITORY" \
+              --title "AjunSu v1.0.0" --latest \
+              --notes "基于 KernelSU-Next 的二改版本，包含 arm64-v8a 与 x86_64 的 ksud。"
+          fi
