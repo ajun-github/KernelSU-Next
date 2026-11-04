@@ -2,7 +2,7 @@ package io.github.ajun.ksunext
 
 /**
  * 品牌信息集中在这里，二改时只需要改这个文件。
- * 注意：字符串资源 res/values*/strings.xml 里的链接需要同步修改。
+ * 注意：字符串资源 res/values 下各语言的 strings.xml 里的链接需要同步修改。
  */
 object Branding {
     /** 项目名，仅用于展示（桌面名称在 strings.xml 的 app_name） */
