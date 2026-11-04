@@ -1,8 +1,7 @@
 name: Release
 on:
-  push:
-    tags:
-      - "v*"
+  # 二改 fork：不再由 tag push 触发（避免创建 Release 标签时启动完整 LKM 构建矩阵）
+  # 如需完整上游发布产物，请手动触发本工作流
   workflow_dispatch:
 
 jobs:
