@@ -9,7 +9,7 @@ object Branding {
     const val NAME = "KernelSU-Demo"
 
     /** 你的仓库地址（About 页、更新检查、问题反馈都用它） */
-    const val REPO_URL = "https://github.com/ajun/KernelSU-Demo"
+    const val REPO_URL = "https://github.com/ajun-github/KernelSU-Next"
 
     /** 问题反馈地址 */
     const val ISSUES_URL = "$REPO_URL/issues"
@@ -21,5 +21,5 @@ object Branding {
     const val AUTHOR = "ajun"
 
     /** GitHub Release API，用于检查管理器更新；留空则关闭更新检查 */
-    const val RELEASE_API = "https://api.github.com/repos/ajun/KernelSU-Demo/releases/latest"
+    const val RELEASE_API = "https://api.github.com/repos/ajun-github/KernelSU-Next/releases/latest"
 }
