@@ -1,0 +1,149 @@
+name: Build APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - dev
+      - main
+      - fork/brand
+    paths-ignore:
+      - "**.md"
+      - "website/**"
+      - "docs/**"
+
+concurrency:
+  group: build-apk-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-ksud:
+    name: Build ksud (${{ matrix.target }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        target:
+          - aarch64-linux-android
+          - x86_64-linux-android
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: nttld/setup-ndk@v1
+        id: setup-ndk
+        with:
+          ndk-version: r29
+
+      - name: Setup rustup
+        run: |
+          rustup update stable
+          rustup target add aarch64-linux-android
+          rustup target add x86_64-linux-android
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: userspace/ksud
+          cache-targets: false
+          cache-bin: false
+
+      - name: Install cross
+        run: |
+          RUSTFLAGS="" cargo install cross --git https://github.com/cross-rs/cross --rev 66845c1
+
+      - name: Assemble LKM bootstrap
+        run: |
+          clang --target=aarch64-linux-gnu -c -nostdlib \
+            -o userspace/ksud/.lkm_image_bootstrap.o \
+            userspace/ksud/src/lkm_image_bootstrap.S
+
+      - name: Build ksud
+        env:
+          BINDGEN_EXTRA_CLANG_ARGS_aarch64_linux_android: >-
+            --sysroot=${{ steps.setup-ndk.outputs.ndk-path }}/toolchains/llvm/prebuilt/linux-x86_64/sysroot
+            -I${{ steps.setup-ndk.outputs.ndk-path }}/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/aarch64-linux-android
+            -I${{ steps.setup-ndk.outputs.ndk-path }}/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include
+        run: |
+          CROSS_NO_WARNINGS=0 cross build --target ${{ matrix.target }} --release --manifest-path ./userspace/ksud/Cargo.toml
+
+      - name: Upload ksud artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: ksud-${{ matrix.target }}
+          path: userspace/ksud/target/**/release/ksud*
+
+  build-apk:
+    name: Build manager APK
+    needs: build-ksud
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v5
+
+      - name: Download ksud artifacts
+        uses: actions/download-artifact@v7
+        with:
+          pattern: ksud-*
+          path: ksud-out
+
+      - name: Copy ksud into jniLibs
+        run: |
+          set -euo pipefail
+          mkdir -p manager/app/src/main/jniLibs/arm64-v8a
+          mkdir -p manager/app/src/main/jniLibs/x86_64
+          A=$(find ksud-out/ksud-aarch64-linux-android -type f -name ksud | head -n1)
+          B=$(find ksud-out/ksud-x86_64-linux-android -type f -name ksud | head -n1)
+          echo "arm64 ksud: $A"
+          echo "x86_64 ksud: $B"
+          cp -f "$A" manager/app/src/main/jniLibs/arm64-v8a/libksud.so
+          cp -f "$B" manager/app/src/main/jniLibs/x86_64/libksud.so
+
+      - name: Prepare signing key
+        working-directory: ./manager
+        env:
+          KEYSTORE_B64: ${{ secrets.KEYSTORE }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          if [ -n "$KEYSTORE_B64" ]; then
+            echo "::notice::使用仓库 Secrets 中的签名密钥"
+            echo "$KEYSTORE_B64" | base64 -d > key.jks
+          else
+            echo "::warning::未配置 KEYSTORE Secret，本次使用临时密钥签名；下次构建签名会变，无法覆盖安装。请配置 KEYSTORE / KEYSTORE_PASSWORD / KEY_ALIAS / KEY_PASSWORD 四个 Secret。"
+            keytool -genkeypair -v -keystore key.jks -alias ksudemo \
+              -keyalg RSA -keysize 2048 -validity 10000 \
+              -storepass "ksudemo123" -keypass "ksudemo123" \
+              -dname "CN=KernelSU-Demo, OU=Dev, O=Demo, L=NA, S=NA, C=CN"
+            KEYSTORE_PASSWORD="ksudemo123"
+            KEY_ALIAS="ksudemo"
+            KEY_PASSWORD="ksudemo123"
+          fi
+          {
+            echo "KEYSTORE_PASSWORD='$KEYSTORE_PASSWORD'"
+            echo "KEY_ALIAS='$KEY_ALIAS'"
+            echo "KEY_PASSWORD='$KEY_PASSWORD'"
+            echo "KEYSTORE_FILE='key.jks'"
+          } >> gradle.properties
+
+      - name: Build with Gradle
+        working-directory: ./manager
+        run: ./gradlew clean assembleRelease
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v7
+        with:
+          name: KernelSU-Demo-apk
+          path: manager/app/build/outputs/apk/release/*.apk
+          retention-days: 30

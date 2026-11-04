@@ -54,7 +54,7 @@ fun getVersionCode(): Int {
 }
 
 fun getVersionName(): String {
-    return getGitDescribe()
+    return "${getGitDescribe()}-demo"
 }
 
 subprojects {
